@@ -6,7 +6,7 @@ using System.Net;
 
 namespace SpeedTester
 {
-    class Program
+    internal class Program
     {
         private static readonly string Location = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
 
@@ -38,7 +38,7 @@ namespace SpeedTester
             Print("Loading config ...");
             var config = SpeedTesterConfig.Loadconfig();
 
-            var bandwidthReports= new List<DownloadResult>();
+            var bandwidthReports = new List<DownloadResult>();
 
             foreach (var download in config.Downloads)
             {
@@ -73,15 +73,15 @@ namespace SpeedTester
             var startTime = DateTime.UtcNow;
 
             var webClient = new WebClient();
-            var length= webClient.DownloadData(download.Link).Length;
+            var length = webClient.DownloadData(download.Link).Length;
 
             var totalSeconds = (DateTime.UtcNow - startTime).TotalSeconds;
 
             return new DownloadResult()
             {
-                TotalSeconds= totalSeconds,
+                TotalSeconds = totalSeconds,
                 Length = length,
-                BandwidthMbitPerSecond = length * 8 / totalSeconds / 1024 / 1024,
+                BandwidthMbitPerSecond = length*8/totalSeconds/1024/1024,
                 Download = download,
             };
         }
@@ -111,7 +111,7 @@ namespace SpeedTester
         {
             try
             {
-                File.AppendAllLines(logFile, new List<string>() {$"{DateTime.Now.ToString("s")};\"{result.Download.Name}\";\"{result.Download.Link}\";{result.BandwidthMbitPerSecond};{result.Length};{result.TotalSeconds}" });
+                File.AppendAllLines(logFile, new List<string>() {$"{DateTime.Now.ToString("s")};\"{result.Download.Name}\";\"{result.Download.Link}\";{result.BandwidthMbitPerSecond};{result.Length};{result.TotalSeconds}"});
             }
             catch (Exception ex)
             {

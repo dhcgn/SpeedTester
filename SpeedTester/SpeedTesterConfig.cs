@@ -7,7 +7,7 @@ namespace SpeedTester
     public class SpeedTesterConfig
     {
         private static readonly string Location = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-        
+
         /// <summary>
         /// see: https://kb.leaseweb.com/display/KB/Link+speeds
         /// see: http://speedtest.tele2.net/
@@ -112,11 +112,12 @@ namespace SpeedTester
 
         public static SpeedTesterConfig Loadconfig()
         {
-            var xmlSerial = new XmlSerializer(typeof(SpeedTesterConfig));
+            var xmlSerial = new XmlSerializer(typeof (SpeedTesterConfig));
             Stream stream = new FileStream(ConfigFullPath, FileMode.Open);
             return xmlSerial.Deserialize(stream) as SpeedTesterConfig;
         }
     }
+
     public class MailConfig
     {
         public string SmtpServer { get; set; }
@@ -129,6 +130,7 @@ namespace SpeedTester
     {
         [XmlAttribute]
         public string Name { get; set; }
+
         public string Link { get; set; }
     }
 }
