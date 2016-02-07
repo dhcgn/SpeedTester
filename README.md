@@ -1,7 +1,7 @@
 # SpeedTester
 SpeedTester running with Mono (e.g. for running on a Synology NAS)
 
-![](https://travis-ci.org/dhcgn/SpeedTester.svg?branch=master "Build Status")
+[![Build Status](https://travis-ci.org/dhcgn/SpeedTester.svg?branch=master)](https://travis-ci.org/dhcgn/SpeedTester)
 
 ## Motivation
 I want to measure my internet connection speed and receive an email with the result.
