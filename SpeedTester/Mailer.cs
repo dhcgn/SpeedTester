@@ -20,6 +20,7 @@ namespace SpeedTester
                 message.Attachments.Add(new Attachment(LogFile));
                 SmtpClient client = new SmtpClient(mailConfig.SmtpServer);
                 client.Credentials = new NetworkCredential(mailConfig.MailFrom, mailConfig.Password);
+                client.EnableSsl = mailConfig.EnableSsl;
 
                 client.Send(message);
             }
