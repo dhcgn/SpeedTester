@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace SpeedTester
@@ -21,6 +24,9 @@ namespace SpeedTester
                 SmtpClient client = new SmtpClient(mailConfig.SmtpServer);
                 client.Credentials = new NetworkCredential(mailConfig.MailFrom, mailConfig.Password);
                 client.EnableSsl = mailConfig.EnableSsl;
+
+                if (Type.GetType("Mono.Runtime") != null)
+                    ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
                 client.Send(message);
             }
