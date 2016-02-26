@@ -97,7 +97,8 @@ namespace SpeedTester
                     SmtpServer = "smtp.myserver.com",
                     MailFrom = "noreply@myserver.com",
                     MailTo = "John.Vulcano.32323@gmail.com",
-                    Password = "secret"
+                    Password = "secret",
+                    EnableSsl = false
                 }
             };
             Save(sampleConfig, ConfigSampleFullPath);
@@ -124,6 +125,7 @@ namespace SpeedTester
         public string MailTo { get; set; }
         public string MailFrom { get; set; }
         public string Password { get; set; }
+        public bool EnableSsl { get; set; }
     }
 
     public class Download
