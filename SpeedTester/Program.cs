@@ -14,6 +14,7 @@ namespace SpeedTester
 
         private static readonly string LogFile = Path.Combine(ExecutableLocation, "log.txt");
         private static readonly string ErrorLogFile = Path.Combine(ExecutableLocation, "error.txt");
+        private static string line;
 
         static void Main(string[] args)
         {
@@ -130,12 +131,22 @@ namespace SpeedTester
 
         private static void WriteLog(DownloadResult result, string logFile)
         {
+            line = $"{DateTime.Now.ToString("s")};\"{result.Download.Name}\";\"{result.Download.Link}\";{result.BandwidthMbitPerSecond};{result.Length};{result.TotalSeconds}";
+
             try
             {
-                File.AppendAllLines(logFile, new List<string>() {$"{DateTime.Now.ToString("s")};\"{result.Download.Name}\";\"{result.Download.Link}\";{result.BandwidthMbitPerSecond};{result.Length};{result.TotalSeconds}"});
+                File.AppendAllLines(logFile, new List<string> {line});
             }
             catch (Exception ex)
             {
+                try
+                {
+                    File.AppendAllLines(logFile+".bak", new List<string> { line });
+                }
+                catch (Exception)
+                {
+                    // just try
+                }
                 ExceptionHandling(ex);
             }
         }
