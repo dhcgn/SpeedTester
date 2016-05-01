@@ -8,11 +8,31 @@ namespace SpeedTester
 {
     internal class Program
     {
-        private static readonly string Location = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+        private static readonly string ExecutableLocation = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
 
-        private static readonly string LogFile = Path.Combine(Location, "log.txt");
+        private static readonly string LogFile = Path.Combine(ExecutableLocation, "log.txt");
 
         static void Main(string[] args)
+        {
+            try
+            {
+                RunInternal(args);
+            }
+            catch (Exception e)
+            {
+                Print("Exception:");
+                Console.WriteLine(e);
+
+                Environment.ExitCode = 1;
+            }
+
+#if DEBUG
+            Print("You are runnung the debug version, press any key to exit.");
+            Console.ReadKey();
+#endif
+        }
+
+        private static void RunInternal(string[] args)
         {
             if (args != null && args.Any())
             {
@@ -30,8 +50,8 @@ namespace SpeedTester
             var isConfigPresent = SpeedTesterConfig.IsConfigPresent();
             if (!isConfigPresent)
             {
-                Print($"No config found at {SpeedTesterConfig.ConfigFullPath}, see smaple config.");
-                Environment.ExitCode = -1;
+                Print($"No config found at {SpeedTesterConfig.ConfigFullPath}, see sample config.");
+                Environment.ExitCode = 2;
                 return;
             }
 
@@ -61,11 +81,6 @@ namespace SpeedTester
 
             Print($"Send email to {config.MailConfig.MailTo}");
             Mailer.SendMail(bandwidthReports, config.MailConfig, LogFile);
-
-#if DEBUG
-            Print("You are runnung the debug version, press any key to exit.");
-            Console.ReadKey();
-#endif
         }
 
         private static DownloadResult DoBandwidthTest(Download download)
