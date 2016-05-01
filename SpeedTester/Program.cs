@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace SpeedTester
 {
@@ -11,6 +13,7 @@ namespace SpeedTester
         private static readonly string ExecutableLocation = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
 
         private static readonly string LogFile = Path.Combine(ExecutableLocation, "log.txt");
+        private static readonly string ErrorLogFile = Path.Combine(ExecutableLocation, "error.txt");
 
         static void Main(string[] args)
         {
@@ -18,10 +21,9 @@ namespace SpeedTester
             {
                 RunInternal(args);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Print("Exception:");
-                Console.WriteLine(e);
+                ExceptionHandling(ex);
 
                 Environment.ExitCode = 1;
             }
@@ -111,8 +113,9 @@ namespace SpeedTester
 
                 return webResponse.StatusCode == HttpStatusCode.OK;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                ExceptionHandling(ex);
                 return false;
             }
         }
@@ -130,7 +133,23 @@ namespace SpeedTester
             }
             catch (Exception ex)
             {
-                Console.Out.WriteLine(ex);
+                ExceptionHandling(ex);
+            }
+        }
+
+        private static void ExceptionHandling(Exception exception, [CallerMemberName] string memberName = "")
+        {
+            Print($"Exception in method {memberName}:");
+            Console.Out.WriteLine(exception);
+
+            try
+            {
+                File.AppendAllText(ErrorLogFile, DateTime.Now.ToString("u"));
+                File.AppendAllText(ErrorLogFile, exception.ToString());
+            }
+            catch (Exception)
+            {
+                Console.Out.WriteLine($"Coudn\'t write {ErrorLogFile}, because: {exception}");
             }
         }
     }
