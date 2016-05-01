@@ -36,4 +36,4 @@ See Synology NAS, should be the same with the exception of Tasks.
 
 ## Sample Report
 
-   ![Sample Report](http://i.imgur.com/GSchfmE.png "Sample Report")
+   ![Sample Report](http://i.imgur.com/7rF5Q6d.png "Sample Report")
