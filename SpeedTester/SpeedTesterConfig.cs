@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace SpeedTester
@@ -16,6 +19,9 @@ namespace SpeedTester
         /// see: http://speedtest.encoline.de/
         /// </summary>
         public List<Download> Downloads { get; set; }
+
+        [XmlArrayItem("Link")]
+        public List<string> PlainIpProvider { get; set; }
 
         public MailConfig MailConfig { get; set; }
 
@@ -92,6 +98,12 @@ namespace SpeedTester
                         Link = "http://speedtest.encoline.de/10MB.bin"
                     },
                 },
+                PlainIpProvider = new List<string>
+                {
+                    "http://externeip.de/plain.php",
+                    "http://checkip.amazonaws.com/",
+                    "https://api.ipify.org"
+                },
                 MailConfig = new MailConfig()
                 {
                     SmtpServer = "smtp.myserver.com",
@@ -113,9 +125,31 @@ namespace SpeedTester
 
         public static SpeedTesterConfig Loadconfig()
         {
-            var xmlSerial = new XmlSerializer(typeof (SpeedTesterConfig));
+            var xmlSerial = new XmlSerializer(typeof(SpeedTesterConfig));
             Stream stream = new FileStream(ConfigFullPath, FileMode.Open);
             return xmlSerial.Deserialize(stream) as SpeedTesterConfig;
+        }
+
+        public static string GetPublicIp(List<string> plainIpProvider)
+        {
+            foreach (var link in plainIpProvider)
+            {
+                try
+                {
+                    var content = new WebClient().DownloadString(link);
+                    var regex = Regex.Match(content, "(?<ip>(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))");
+                    if(!regex.Success)continue;
+
+                    return regex.Groups["ip"].Value;
+
+                }
+                catch (Exception)
+                {
+                    
+                }
+
+            }
+            return "NotFound";
         }
     }
 

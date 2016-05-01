@@ -60,6 +60,9 @@ namespace SpeedTester
             Print("Loading config ...");
             var config = SpeedTesterConfig.Loadconfig();
 
+            Print("Get public ip ...");
+            var ip = SpeedTesterConfig.GetPublicIp(config.PlainIpProvider);
+
             var bandwidthReports = new List<DownloadResult>();
 
             foreach (var download in config.Downloads)
@@ -82,7 +85,7 @@ namespace SpeedTester
             }
 
             Print($"Send email to {config.MailConfig.MailTo}");
-            Mailer.SendMail(bandwidthReports, config.MailConfig, LogFile);
+            Mailer.SendMail(bandwidthReports, config.MailConfig, LogFile, ip);
         }
 
         private static DownloadResult DoBandwidthTest(Download download)
