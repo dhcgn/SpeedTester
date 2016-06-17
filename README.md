@@ -2,6 +2,10 @@
 SpeedTester running with Mono (e.g. for running on a Synology NAS)
 
 [![Build Status](https://travis-ci.org/dhcgn/SpeedTester.svg?branch=master)](https://travis-ci.org/dhcgn/SpeedTester)
+[![Code Climate](https://codeclimate.com/github/dhcgn/SpeedTester/badges/gpa.svg)](https://codeclimate.com/github/dhcgn/SpeedTester)
+[![Test Coverage](https://codeclimate.com/github/dhcgn/SpeedTester/badges/coverage.svg)](https://codeclimate.com/github/dhcgn/SpeedTester/coverage)
+[![Issue Count](https://codeclimate.com/github/dhcgn/SpeedTester/badges/issue_count.svg)](https://codeclimate.com/github/dhcgn/SpeedTester)
+
 
 ## Motivation
 I want to measure my internet connection speed and receive an email with the result.
